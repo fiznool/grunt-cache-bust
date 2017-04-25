@@ -78,7 +78,8 @@ module.exports = function(grunt) {
 
         // Go through each source file and replace them with busted file if available
         var map = opts.queryString ? {} : assetMap;
-        getFilesToBeRenamed(this.files, map, opts.baseDir).forEach(replaceInFile);
+        var numBusted = getFilesToBeRenamed(this.files, map, opts.baseDir).forEach(replaceInFile);
+        grunt.log.ok(numBusted + ' file' + (numBusted !== 1 ? 's ' : ' ') + 'busted.'); 
 
         function replaceInFile(filepath) {
             var markup = grunt.file.read(filepath);
@@ -205,7 +206,7 @@ module.exports = function(grunt) {
                     if (!opts.queryString && opts.outputDir && _.has(assetMap, file)) {
                         file = assetMap[file];
                     }
-                    grunt.log.ok('Busted:', file);
+                    grunt.log.verbose('Busted:', file);
                     return path.resolve((originalConfig.cwd ? originalConfig.cwd + path.sep : '') + file);
                 });
         }
